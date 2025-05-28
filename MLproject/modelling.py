@@ -11,9 +11,11 @@ import dagshub
 # Replace with your DagsHub username and repository name
 REPO_OWNER = "farisgp"  # Replace with your DagsHub username
 REPO_NAME = "Eksperimen_SML_FarisGhina"  # Replace with your repository name
+token = os.getenv("DAGSHUB_TOKEN")
 
-# Initialize DagsHub - This helps DagsHub track the experiment correctly
-dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME)
+# Inisialisasi dengan token
+dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, token=token)
+
 
 
 # mlflow.set_tracking_uri("http://127.0.0.1:5000/")  # Comment out local tracking URI

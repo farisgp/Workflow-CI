@@ -11,10 +11,11 @@ import dagshub
 # Replace with your DagsHub username and repository name
 REPO_OWNER = "farisgp"  # Replace with your DagsHub username
 REPO_NAME = "Eksperimen_SML_FarisGhina"  # Replace with your repository name
-
+# Tambahkan ini di atas
+token = os.getenv("DAGSHUB_TOKEN")
 
 # Inisialisasi dengan token
-dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME)
+dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, token=token)
 
 
 

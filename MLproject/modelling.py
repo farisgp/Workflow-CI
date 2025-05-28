@@ -12,7 +12,7 @@ REPO_OWNER = "farisgp"
 REPO_NAME = "Eksperimen_SML_FarisGhina"  
 
 # Inisialisasi dengan token
-dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, token=token)
+dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME)
 
 # mlflow.set_tracking_uri("http://127.0.0.1:5000/") 
 

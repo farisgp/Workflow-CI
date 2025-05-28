@@ -61,7 +61,7 @@ jobs:
         shell: bash -l {0}
         run: |
           cd MLproject
-          mlflow run . 
+          mlflow run . --no-conda
 
       # Save models to GitHub Repository
       - name: Save mlruns to repo

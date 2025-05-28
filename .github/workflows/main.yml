@@ -46,7 +46,6 @@ jobs:
           pip install mlflow
         
       - name: Run mlflow project
-        shell: bash -l {0}
         run: |
           mlflow run MLproject --env-manager=local 
 

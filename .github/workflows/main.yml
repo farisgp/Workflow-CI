@@ -58,10 +58,10 @@ jobs:
         shell: bash -l {0}
         
       - name: Run mlflow project
-        shell: bash -l {0}
         run: |
           cd MLproject
-          mlflow run . --no-conda
+          mlflow run . 
+        shell: bash -l {0}
 
       # Save models to GitHub Repository
       - name: Save mlruns to repo

@@ -8,18 +8,13 @@ import numpy as np
 import os
 import dagshub
 
-# Replace with your DagsHub username and repository name
-REPO_OWNER = "farisgp"  # Replace with your DagsHub username
-REPO_NAME = "Eksperimen_SML_FarisGhina"  # Replace with your repository name
-# Tambahkan ini di atas
-token = os.getenv("DAGSHUB_TOKEN")
+REPO_OWNER = "farisgp"  
+REPO_NAME = "Eksperimen_SML_FarisGhina"  
 
 # Inisialisasi dengan token
 dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, token=token)
 
-
-
-# mlflow.set_tracking_uri("http://127.0.0.1:5000/")  # Comment out local tracking URI
+# mlflow.set_tracking_uri("http://127.0.0.1:5000/") 
 
 # Set the tracking URI to your DagsHub repository
 mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")

@@ -1,0 +1,79 @@
+name: Preprocessing Pipeline
+ 
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+ 
+env:
+  CSV_URL: "dataset_raw/clothes_price_prediction_data.csv"
+  TARGET_VAR: "quality"
+  ALPHA: 0.5
+  L1_RATIO: 0.5
+  RANDOM_STATE: 42
+ 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+ 
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE
+      - uses: actions/checkout@v3
+ 
+      # Setup Python 3.12.7
+      - name: Set up Python 3.12.7
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12.7"
+      
+      # Check Env Variables
+      - name: Check Env
+        run: |
+          echo $CSV_URL
+ 
+      # Install mlflow
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas numpy matplotlib seaborn scikit-learn
+          pip install mlflow
+      
+      # Run Preprocessing Script
+      - name: Run preprocessing script
+        run: |
+          mkdir -p preprocessing/clothes_price_prediction_preprocessing
+          python preprocessing/automate_farisghina.py 
+      # Run as a mlflow project
+      - name: Run mlflow project
+        run: |
+          mlflow run MLproject --env-manager=local 
+
+      # Save models to GitHub Repository
+      - name: Save mlruns to repo
+        run: |
+          git config --global user.name ${{ secrets.username }}
+          git config --global user.email ${{ secrets.email }}
+          git add mlruns/
+          git commit -m "Save mlruns from CI run"
+          git push origin main
+
+      # - name: Commit and push processed files
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GH_PAT }}  # Mengambil token dari GitHub Secrets
+      #   run: |
+      #     # git config user.name "farisgp"
+      #     # git config user.email "farisghina51@gmail.com"
+      #     # git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/farisgp/Eksperimen_SML_FarisGhina.git
+      #     # git add preprocessing/clothes_price_prediction_preprocessing.csv
+      #     # git commit -m "Update preprocessed dataset" || echo "No changes to commit"
+      #     # git push origin main
+      #     # git config --global user.name 'github-actions[bot]'
+      #     # git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      #     # git add preprocessing/clothes_price_prediction_preprocessing
+      #     # git commit -m "Add preprocessing output"
+      #     # git push origin HEAD:${{ github.ref }}
+
+      

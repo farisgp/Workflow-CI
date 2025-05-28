@@ -41,11 +41,11 @@ jobs:
           pip install pandas numpy matplotlib seaborn scikit-learn
           pip install mlflow
       
-      # Run Preprocessing Script
-      - name: Run preprocessing script
-        run: |
-          mkdir -p preprocessing/clothes_price_prediction_preprocessing
-          python preprocessing/automate_farisghina.py 
+      # # Run Preprocessing Script
+      # - name: Run preprocessing script
+      #   run: |
+      #     mkdir -p preprocessing/clothes_price_prediction_preprocessing
+      #     python preprocessing/automate_farisghina.py 
       # Run as a mlflow project
       - name: Run mlflow project
         run: |

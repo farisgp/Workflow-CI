@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/ASUS/Documents/Laskar%20AI/Submission/Membangun%20Sistem%20ML/Workflow-CI/mlruns/0/e5d977da816f4c5c8c350ed24494d0d2/artifacts
+end_time: 1748422521322
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: e5d977da816f4c5c8c350ed24494d0d2
+run_name: unruly-frog-710
+run_uuid: e5d977da816f4c5c8c350ed24494d0d2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748422501460
+status: 4
+tags: []
+user_id: ASUS

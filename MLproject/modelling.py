@@ -28,7 +28,7 @@ print("Tracking URI:", mlflow.get_tracking_uri())
 # Create a new MLflow Experiment
 mlflow.set_experiment("Clothes Price Prediction")
 
-df = pd.read_csv("clothes_price_prediction_data.csv")
+df = pd.read_csv("clothes_price_prediction_preprocessing.csv")
 
 # Encode fitur kategorikal
 label_encoders = {}

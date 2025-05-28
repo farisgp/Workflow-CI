@@ -1,4 +1,4 @@
-name: latihan-cs-mlflow
+name: clothes_price_prediction_project
  
 conda_env: conda.yaml
  

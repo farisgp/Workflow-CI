@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/ASUS/Documents/Laskar%20AI/Submission/Membangun%20Sistem%20ML/Workflow-CI/mlruns/0/61c3036c6cd94602abf6cfdef2952910/artifacts
+end_time: 1748422658665
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 61c3036c6cd94602abf6cfdef2952910
+run_name: rebellious-robin-560
+run_uuid: 61c3036c6cd94602abf6cfdef2952910
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748422640331
+status: 4
+tags: []
+user_id: ASUS

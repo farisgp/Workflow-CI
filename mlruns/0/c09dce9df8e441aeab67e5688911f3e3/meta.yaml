@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/ASUS/Documents/Laskar%20AI/Submission/Membangun%20Sistem%20ML/Workflow-CI/mlruns/0/c09dce9df8e441aeab67e5688911f3e3/artifacts
+end_time: 1748423314362
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: c09dce9df8e441aeab67e5688911f3e3
+run_name: big-penguin-126
+run_uuid: c09dce9df8e441aeab67e5688911f3e3
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748423230979
+status: 4
+tags: []
+user_id: ASUS

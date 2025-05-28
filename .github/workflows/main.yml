@@ -38,6 +38,7 @@ jobs:
       - name: Install dependencies
         run: |
           conda env update --name crop-recommendation-env --file MLproject/conda.yaml --prune
+        
       
       # # Run Preprocessing Script
       # - name: Run preprocessing script
@@ -49,6 +50,7 @@ jobs:
         run: |
           cd MLproject
           mlflow run . --no-conda
+        shell: bash -l {0}
 
       # Save models to GitHub Repository
       - name: Save mlruns to repo

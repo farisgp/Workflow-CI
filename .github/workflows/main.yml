@@ -47,7 +47,8 @@ jobs:
       # Run as a mlflow project
       - name: Run mlflow project
         run: |
-          mlflow run MLproject --env-manager=local 
+          cd MLproject
+          mlflow run . --no-conda
 
       # Save models to GitHub Repository
       - name: Save mlruns to repo

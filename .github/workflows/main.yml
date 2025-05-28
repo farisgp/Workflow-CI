@@ -37,31 +37,15 @@ jobs:
       # Install mlflow
       - name: Install dependencies
         run: |
-          conda env update --name crop-recommendation-env --file MLproject/conda.yaml --prune
+          python -m pip install --upgrade pip
+          pip install pandas numpy matplotlib seaborn scikit-learn
           pip install mlflow
-        shell: bash -l {0}
-        
-      
-      # # Run Preprocessing Script
-      # - name: Run preprocessing script
-      #   run: |
-      #     mkdir -p preprocessing/clothes_price_prediction_preprocessing
-      #     python preprocessing/automate_farisghina.py 
-      # Run as a mlflow project
-      - name: Configure MLflow Tracking URI to DagsHub
-        env:
-          MLFLOW_TRACKING_URI: https://dagshub.com/farisgp/Eksperimen_SML_FarisGhina.mlflow/
-          MLFLOW_TRACKING_USERNAME: ${{ secrets.DAGSHUB_USERNAME }} 
-          MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_TOKEN }} 
-        run: |
-          echo "MLFLOW_TRACKING_URI set to: $MLFLOW_TRACKING_URI"
-        shell: bash -l {0}
         
       - name: Run mlflow project
+        shell: bash -l {0}
         run: |
           cd MLproject
-          mlflow run . 
-        shell: bash -l {0}
+          mlflow run MLproject --env-manager=local 
 
       # Save models to GitHub Repository
       - name: Save mlruns to repo

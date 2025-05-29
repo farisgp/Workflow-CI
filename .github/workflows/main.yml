@@ -46,16 +46,16 @@ jobs:
       - name: Run mlflow project
         run: |
           cd MLproject
-          # mlflow run . -P data_path=clothes_price_prediction_preprocessing.csv --env-manager=local | tee output.log
-          # RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
-          # echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
-          # echo "Latest run_id: $RUN_ID"
-          MLFLOW_OUTPUT=$(mlflow run . -P data_path=clothes_price_prediction_preprocessing.csv --env-manager=local)
-          echo "$MLFLOW_OUTPUT"
-          RUN_ID=$(echo "$MLFLOW_OUTPUT" | grep -oP '(Run ID|MLflow Run ID): \K[a-f0-9]+' | tail -n 1)
-          echo "Debug: Collected RUN_ID = $RUN_ID"
-          echo "mlflow_run_id=$RUN_ID" >> $GITHUB_OUTPUT 
+          mlflow run . -P data_path=MLproject/clothes_price_prediction_preprocessing.csv --env-manager=local | tee output.log
+          RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
+          echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
           echo "Latest run_id: $RUN_ID"
+          # MLFLOW_OUTPUT=$(mlflow run . -P data_path=clothes_price_prediction_preprocessing.csv --env-manager=local)
+          # echo "$MLFLOW_OUTPUT"
+          # RUN_ID=$(echo "$MLFLOW_OUTPUT" | grep -oP '(Run ID|MLflow Run ID): \K[a-f0-9]+' | tail -n 1)
+          # echo "Debug: Collected RUN_ID = $RUN_ID"
+          # echo "mlflow_run_id=$RUN_ID" >> $GITHUB_OUTPUT 
+          # echo "Latest run_id: $RUN_ID"
           
       - name: Upload trained model
         uses: actions/upload-artifact@v4

@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 import random
 import numpy as np
 import os
+import joblib
 import dagshub
 
 REPO_OWNER = "farisgp"  
@@ -57,3 +58,8 @@ with mlflow.start_run():
     )    # Log metrics
     accuracy = model.score(X_test, y_test)
     mlflow.log_metric("accuracy", accuracy)
+
+output_path = "./models/model.pkl"
+os.makedirs(os.path.dirname(output_path), exist_ok=True)
+joblib.dump(pipeline, output_path)
+print(f"Model saved to: {output_path}")

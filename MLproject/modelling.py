@@ -8,11 +8,10 @@ import numpy as np
 import os
 import joblib
 import dagshub
+import argparse
 
 REPO_OWNER = "farisgp"  
 REPO_NAME = "Eksperimen_SML_FarisGhina"  
-
-# mlflow.set_tracking_uri("http://127.0.0.1:5000/") 
 
 # Set the tracking URI to your DagsHub repository
 mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
@@ -24,7 +23,12 @@ print("Tracking URI:", mlflow.get_tracking_uri())
 # Create a new MLflow Experiment
 mlflow.set_experiment("Clothes Price Prediction")
 
-df = pd.read_csv("clothes_price_prediction_preprocessing.csv")
+# Argument parser
+parser = argparse.ArgumentParser()
+parser.add_argument("--data_path", type=str, default="clothes_price_prediction_preprocessing.csv")
+args = parser.parse_args()
+
+df = pd.read_csv(args.data_path)
 
 # Encode fitur kategorikal
 label_encoders = {}
@@ -61,5 +65,5 @@ with mlflow.start_run():
 
 output_path = "./models/model.pkl"
 os.makedirs(os.path.dirname(output_path), exist_ok=True)
-joblib.dump(pipeline, output_path)
+joblib.dump(model, output_path)
 print(f"Model saved to: {output_path}")

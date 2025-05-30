@@ -46,10 +46,10 @@ jobs:
       - name: Run mlflow project
         run: |
           cd MLproject
-          # mlflow run . -P data_path=MLproject/clothes_price_prediction_preprocessing.csv --env-manager=local | tee output.log
-          # RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
-          # echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
-          # echo "Latest run_id: $RUN_ID"
+          mlflow run . -P data_path=MLproject/clothes_price_prediction_preprocessing.csv --env-manager=local | tee output.log
+          RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
+          echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
+          echo "Latest run_id: $RUN_ID"
           
           # MLFLOW_OUTPUT=$(mlflow run . -P data_path=clothes_price_prediction_preprocessing.csv --env-manager=local)
           # echo "$MLFLOW_OUTPUT"
@@ -58,27 +58,27 @@ jobs:
           # echo "mlflow_run_id=$RUN_ID" >> $GITHUB_OUTPUT 
           # echo "Latest run_id: $RUN_ID"
 
-          MLFLOW_OUTPUT=$(mlflow run . -P data_path=clothes_price_prediction_preprocessing.csv --env-manager=local)
-          MLFLOW_EXIT_CODE=$?
-          echo "$MLFLOW_OUTPUT"
-          if [ $MLFLOW_EXIT_CODE -ne 0 ]; then
-            echo "❌ MLflow run failed with exit code $MLFLOW_EXIT_CODE"
-            exit 1
-          fi
-          RUN_ID=$(echo "$MLFLOW_OUTPUT" | grep -oP '(Run ID|MLflow Run ID): \K[a-f0-9]+' | tail -n 1)
-          if [ -z "$RUN_ID" ]; then
-            echo "❌ Failed to extract MLflow RUN_ID from output."
-            exit 1
-          fi
-          echo "✅ Debug: Collected RUN_ID = $RUN_ID"
-          echo "mlflow_run_id=$RUN_ID" >> $GITHUB_OUTPUT
-          echo "✅ Latest run_id: $RUN_ID"
-          echo "⏳ Waiting for Dagshub to stabilize..."
-          sleep 10
-          echo "📡 Testing run fetch from Dagshub..."
-          mlflow runs get --run-id $RUN_ID || {
-            echo "⚠️ Warning: Failed to fetch run details from tracking server. It might still be initializing or there’s a server issue."
-          }
+          # MLFLOW_OUTPUT=$(mlflow run . -P data_path=clothes_price_prediction_preprocessing.csv --env-manager=local)
+          # MLFLOW_EXIT_CODE=$?
+          # echo "$MLFLOW_OUTPUT"
+          # if [ $MLFLOW_EXIT_CODE -ne 0 ]; then
+          #   echo "❌ MLflow run failed with exit code $MLFLOW_EXIT_CODE"
+          #   exit 1
+          # fi
+          # RUN_ID=$(echo "$MLFLOW_OUTPUT" | grep -oP '(Run ID|MLflow Run ID): \K[a-f0-9]+' | tail -n 1)
+          # if [ -z "$RUN_ID" ]; then
+          #   echo "❌ Failed to extract MLflow RUN_ID from output."
+          #   exit 1
+          # fi
+          # echo "✅ Debug: Collected RUN_ID = $RUN_ID"
+          # echo "mlflow_run_id=$RUN_ID" >> $GITHUB_OUTPUT
+          # echo "✅ Latest run_id: $RUN_ID"
+          # echo "⏳ Waiting for Dagshub to stabilize..."
+          # sleep 10
+          # echo "📡 Testing run fetch from Dagshub..."
+          # mlflow runs get --run-id $RUN_ID || {
+          #   echo "⚠️ Warning: Failed to fetch run details from tracking server. It might still be initializing or there’s a server issue."
+          # }
           
       - name: Upload trained model
         uses: actions/upload-artifact@v4
@@ -96,11 +96,12 @@ jobs:
         run: |
           echo "Using RUN_ID=${{ steps.run_mlflow_project.outputs.RUN_ID }}"
           mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "cc"
+          
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ vars.DOCKER_USERNAME }}
-          password: ${{ vars.DOCKER_PASSWORD }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
           
       - name: Build Docker image
         run: docker build -t farisgp/clothes_price:latest MLproject/

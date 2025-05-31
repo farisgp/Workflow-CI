@@ -40,7 +40,7 @@ jobs:
       - name: Run mlflow project
         run: |
           cd MLproject
-           mlflow run . -P data_path=clothes_price_prediction_preprocessing.csv --env-manager=local
+          mlflow run . -P data_path=clothes_price_prediction_preprocessing.csv --env-manager=local
 
       # - name: Set up Python 3.12.7
       #   uses: actions/setup-python@v4

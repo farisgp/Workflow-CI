@@ -39,7 +39,7 @@ jobs:
 
       - name: Run mlflow project
         run: |
-          mlflow run MLproject -P data_path=MLproject/clothes_price_prediction_preprocessing.csv
+          mlflow run MLproject -P data_path=clothes_price_prediction_preprocessing.csv
 
       # - name: Set up Python 3.12.7
       #   uses: actions/setup-python@v4

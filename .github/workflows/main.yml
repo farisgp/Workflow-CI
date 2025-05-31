@@ -149,7 +149,7 @@ on:
 #       #     # git push origin HEAD:${{ github.ref }}
 
 env:
-  CSV_URL: "MLproject/clothes_price_prediction_preprocessing.csv"
+  CSV_URL: "MLproject/clothes_price_prediction_data.csv"
   
 jobs:
   build:

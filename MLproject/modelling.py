@@ -63,6 +63,11 @@ with mlflow.start_run():
     accuracy = model.score(X_test, y_test)
     mlflow.log_metric("accuracy", accuracy)
 
+    # Cetak run_id agar bisa digunakan di GitHub Actions
+    run_id = run.info.run_id
+    print(f"MLFLOW_RUN_ID={run_id}")
+
+
 output_path = "./models/model.pkl"
 os.makedirs(os.path.dirname(output_path), exist_ok=True)
 joblib.dump(model, output_path)

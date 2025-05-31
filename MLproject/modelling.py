@@ -47,7 +47,7 @@ X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, 
 
 input_example = X_train[0:5]
 
-with mlflow.start_run():
+with mlflow.start_run as run():
     mlflow.autolog()
     # Log parameters
     n_estimators = 505

@@ -39,8 +39,9 @@ jobs:
 
       - name: Run mlflow project
         run: |
-          cd MLproject
-          mlflow run . -P data_path=clothes_price_prediction_preprocessing.csv --env-manager=local
+          # cd MLproject
+          # mlflow run . -P data_path=clothes_price_prediction_preprocessing.csv --env-manager=local
+          mlflow run MLproject --env-manager=local 
 
       - name: Get latest MLflow run_id
         id: get_run_id

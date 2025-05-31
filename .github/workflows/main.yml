@@ -39,6 +39,7 @@ jobs:
 
       - name: Run mlflow project
         run: |
+          cd MLProject
           mlflow run MLproject -P data_path=clothes_price_prediction_preprocessing.csv
 
       # - name: Set up Python 3.12.7

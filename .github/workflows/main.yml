@@ -8,189 +8,121 @@ on:
     branches:
       - main
  
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
- 
-#     steps:
-#       # Checks-out your repository under $GITHUB_WORKSPACE
-#       - name: Checkout Source Code
-#         uses: actions/checkout@v3
- 
-#       - name: Set up Miniconda
-#         uses: conda-incubator/setup-miniconda@v2
-#         with:
-#           activate-environment: clothes-env
-#           environment-file: MLproject/conda.yaml
-#           auto-activate-base: false
-
-#        # Install mlflow
-#       - name: Install dependencies
-#         run: |
-#           python -m pip install --upgrade pip
-#           pip install pandas numpy matplotlib seaborn scikit-learn 
-#           pip install mlflow dagshub joblib
-
-#       - name: Export MLflow Environment Variables
-#         run: |
-#           echo "MLFLOW_TRACKING_URI=${{ vars.MLFLOW_TRACKING_URI }}" >> $GITHUB_ENV
-#           echo "MLFLOW_TRACKING_USERNAME=${{ secrets.DAGSHUB_USERNAME }}" >> $GITHUB_ENV
-#           echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.DAGSHUB_TOKEN }}" >> $GITHUB_ENV
-
-#       - name: Run mlflow project
-#         run: |
-#           # cd MLproject
-#           # mlflow run . -P data_path=clothes_price_prediction_preprocessing.csv --env-manager=local
-#           mlflow run MLproject --env-manager=local 
-
-#       - name: Get latest MLflow run_id
-#         id: get_run_id
-#         run: |
-#           RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
-#           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
-#           echo "run_id=$RUN_ID" >> $GITHUB_OUTPUT
-
-#       # - name: Set up Python 3.12.7
-#       #   uses: actions/setup-python@v4
-#       #   with:
-#       #     python-version: "3.12.7"
-      
-#       # # Check Env Variables
-#       # - name: Check Env Variables
-#       #   run: |
-#       #     echo $CSV_URL
-#       #     echo "DAGSHUB_USERNAME is set: ${{ secrets.DAGSHUB_USERNAME != '' }}"
-#       #     echo "DOCKER_USERNAME is set: ${{ vars.DOCKER_USERNAME != '' }}"
- 
-     
-
-      
-        
-#       # - name: Run mlflow project & Find Latest MLflow Run ID
-#       #   run: |
-#       #     cd MLproject
-#       #     mlflow run . -P data_path=MLproject/clothes_price_prediction_preprocessing.csv --env-manager=local | tee output.log
-#       #     RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
-#       #     echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
-#       #     echo "Latest run_id: $RUN_ID"
-          
-#           # MLFLOW_OUTPUT=$(mlflow run . -P data_path=clothes_price_prediction_preprocessing.csv --env-manager=local)
-#           # echo "$MLFLOW_OUTPUT"
-#           # RUN_ID=$(echo "$MLFLOW_OUTPUT" | grep -oP '(Run ID|MLflow Run ID): \K[a-f0-9]+' | tail -n 1)
-#           # echo "Debug: Collected RUN_ID = $RUN_ID"
-#           # echo "mlflow_run_id=$RUN_ID" >> $GITHUB_OUTPUT 
-#           # echo "Latest run_id: $RUN_ID"
-
-#           # MLFLOW_OUTPUT=$(mlflow run . -P data_path=clothes_price_prediction_preprocessing.csv --env-manager=local)
-#           # MLFLOW_EXIT_CODE=$?
-#           # echo "$MLFLOW_OUTPUT"
-#           # if [ $MLFLOW_EXIT_CODE -ne 0 ]; then
-#           #   echo "❌ MLflow run failed with exit code $MLFLOW_EXIT_CODE"
-#           #   exit 1
-#           # fi
-#           # RUN_ID=$(echo "$MLFLOW_OUTPUT" | grep -oP '(Run ID|MLflow Run ID): \K[a-f0-9]+' | tail -n 1)
-#           # if [ -z "$RUN_ID" ]; then
-#           #   echo "❌ Failed to extract MLflow RUN_ID from output."
-#           #   exit 1
-#           # fi
-#           # echo "✅ Debug: Collected RUN_ID = $RUN_ID"
-#           # echo "mlflow_run_id=$RUN_ID" >> $GITHUB_OUTPUT
-#           # echo "✅ Latest run_id: $RUN_ID"
-#           # echo "⏳ Waiting for Dagshub to stabilize..."
-#           # sleep 10
-#           # echo "📡 Testing run fetch from Dagshub..."
-#           # mlflow runs get --run-id $RUN_ID || {
-#           #   echo "⚠️ Warning: Failed to fetch run details from tracking server. It might still be initializing or there’s a server issue."
-#           # }
-          
-#       - name: Upload trained model
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: trained-model
-#           path: models/model.pkl
-
-#       - name: Upload MLflow logs
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: mlflow-logs
-#           path: MLproject/mlruns/
-
-#       - name: Build Docker Model
-#         run: |
-#           echo "Using RUN_ID=${{ steps.run_mlflow_project.outputs.RUN_ID }}"
-#           mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "cc"
-          
-#       - name: Log in to Docker Hub
-#         uses: docker/login-action@v2
-#         with:
-#           username: ${{ vars.DOCKER_USERNAME }}
-#           password: ${{ secrets.DOCKER_PASSWORD }}
-          
-#       - name: Build Docker image
-#         run: docker build -t farisgp/clothes_price:latest MLproject/
-  
-#       - name: Push Docker image
-#         run: docker push farisgp/clothes_price:latest
-
-#       # - name: Commit and push processed files
-#       #   env:
-#       #     GH_TOKEN: ${{ secrets.GH_PAT }}  # Mengambil token dari GitHub Secrets
-#       #   run: |
-#       #     # git config user.name "farisgp"
-#       #     # git config user.email "farisghina51@gmail.com"
-#       #     # git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/farisgp/Eksperimen_SML_FarisGhina.git
-#       #     # git add preprocessing/clothes_price_prediction_preprocessing.csv
-#       #     # git commit -m "Update preprocessed dataset" || echo "No changes to commit"
-#       #     # git push origin main
-#       #     # git config --global user.name 'github-actions[bot]'
-#       #     # git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-#       #     # git add preprocessing/clothes_price_prediction_preprocessing
-#       #     # git commit -m "Add preprocessing output"
-#       #     # git push origin HEAD:${{ github.ref }}
-
-env:
-  CSV_URL: "MLproject/clothes_price_prediction_data.csv"
-  MLFLOW_TRACKING_URI: ${{ vars.MLFLOW_TRACKING_URI }}
-  MLFLOW_HTTP_REQUEST_TIMEOUT: 60
-  
 jobs:
   build:
     runs-on: ubuntu-latest
  
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE
-      - uses: actions/checkout@v3
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
  
-      # Setup Python 3.12.7
-      - name: Set up Python 3.12.7
-        uses: actions/setup-python@v4
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v2
         with:
-          python-version: "3.12.7"
-      
-      # Check Env Variables
-      - name: Check Env
-        run: |
-          echo $CSV_URL
- 
-      # Install mlflow
+          activate-environment: clothes-env
+          environment-file: MLproject/conda.yaml
+          auto-activate-base: false
+
+       # Install mlflow
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pandas numpy matplotlib seaborn scikit-learn 
           pip install mlflow dagshub joblib
-      
-      # Run as a mlflow project
+
+      - name: Export MLflow Environment Variables
+        run: |
+          echo "MLFLOW_TRACKING_URI=${{ vars.MLFLOW_TRACKING_URI }}" >> $GITHUB_ENV
+          echo "MLFLOW_TRACKING_USERNAME=${{ secrets.DAGSHUB_USERNAME }}" >> $GITHUB_ENV
+          echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.DAGSHUB_TOKEN }}" >> $GITHUB_ENV
+
       - name: Run mlflow project
         run: |
-          mlflow run MLproject --env-manager=local 
- 
-      # Save models to GitHub Repository
-      - name: Save mlruns to repo
-        run: |
-          git config --global user.name ${{ secrets.username }}
-          git config --global user.email ${{ secrets.email }}
-          git add mlruns/
-          git commit -m "Save mlruns from CI run"
-          git push origin master
+          mlflow run MLproject -P data_path=MLproject/clothes_price_prediction_preprocessing.csv
 
+      # - name: Set up Python 3.12.7
+      #   uses: actions/setup-python@v4
+      #   with:
+      #     python-version: "3.12.7"
+      
+      # # Check Env Variables
+      # - name: Check Env Variables
+      #   run: |
+      #     echo $CSV_URL
+      #     echo "DAGSHUB_USERNAME is set: ${{ secrets.DAGSHUB_USERNAME != '' }}"
+      #     echo "DOCKER_USERNAME is set: ${{ vars.DOCKER_USERNAME != '' }}"
+ 
+     
+
+      
+        
+      # - name: Run mlflow project & Find Latest MLflow Run ID
+      #   run: |
+      #     cd MLproject
+      #     mlflow run . -P data_path=MLproject/clothes_price_prediction_preprocessing.csv --env-manager=local | tee output.log
+      #     RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
+      #     echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
+      #     echo "Latest run_id: $RUN_ID"
+          
+          # MLFLOW_OUTPUT=$(mlflow run . -P data_path=clothes_price_prediction_preprocessing.csv --env-manager=local)
+          # echo "$MLFLOW_OUTPUT"
+          # RUN_ID=$(echo "$MLFLOW_OUTPUT" | grep -oP '(Run ID|MLflow Run ID): \K[a-f0-9]+' | tail -n 1)
+          # echo "Debug: Collected RUN_ID = $RUN_ID"
+          # echo "mlflow_run_id=$RUN_ID" >> $GITHUB_OUTPUT 
+          # echo "Latest run_id: $RUN_ID"
+          
+      - name: Upload trained model
+        uses: actions/upload-artifact@v4
+        with:
+          name: trained-model
+          path: MLproject/model.pkl
+
+      - name: Upload MLflow logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: mlflow-logs
+          path: mlruns/
+
+      - name: Get latest MLflow run_id
+        id: get_run_id
+        run: |
+          # RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
+          RUN_ID=$(ls -td mlruns/0/* | head -1 | xargs basename)
+          echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
+          echo "run_id=$RUN_ID" >> $GITHUB_OUTPUT
+
+      - name: Build Docker Model
+        run: |
+          # echo "Using RUN_ID=${{ steps.run_mlflow_project.outputs.RUN_ID }}"
+          # mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "cc"
+          mlflow models build-docker --model-uri "runs:/${{ env.RUN_ID }}/model" --name "cc"
+          
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ vars.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          
+      - name: Build Docker image
+        run: docker build -t farisgp/clothes_price:latest MLproject/
+  
+      - name: Push Docker image
+        run: docker push farisgp/clothes_price:latest
+
+      # - name: Commit and push processed files
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GH_PAT }}  # Mengambil token dari GitHub Secrets
+      #   run: |
+      #     # git config user.name "farisgp"
+      #     # git config user.email "farisghina51@gmail.com"
+      #     # git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/farisgp/Eksperimen_SML_FarisGhina.git
+      #     # git add preprocessing/clothes_price_prediction_preprocessing.csv
+      #     # git commit -m "Update preprocessed dataset" || echo "No changes to commit"
+      #     # git push origin main
+      #     # git config --global user.name 'github-actions[bot]'
+      #     # git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      #     # git add preprocessing/clothes_price_prediction_preprocessing
+      #     # git commit -m "Add preprocessing output"
+      #     # git push origin HEAD:${{ github.ref }}
       

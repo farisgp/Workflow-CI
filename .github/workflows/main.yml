@@ -14,21 +14,27 @@ jobs:
  
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE
-      - uses: actions/checkout@v3
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
  
-      - name: Set up Miniconda
-        uses: conda-incubator/setup-miniconda@v2
+      # - name: Set up Miniconda
+      #   uses: conda-incubator/setup-miniconda@v2
+      #   with:
+      #     activate-environment: clothes-env
+      #     environment-file: MLproject/conda.yaml
+      #     auto-activate-base: false
+
+      - name: Set up Python 3.12.7
+        uses: actions/setup-python@v4
         with:
-          activate-environment: clothes-env
-          environment-file: MLproject/conda.yaml
-          auto-activate-base: false
+          python-version: "3.12.7"
       
       # Check Env Variables
-      - name: Check Env
+      - name: Check Env Variables
         run: |
           echo $CSV_URL
           echo "DAGSHUB_USERNAME is set: ${{ secrets.DAGSHUB_USERNAME != '' }}"
-          echo "DAGSHUB_TOKEN is set: ${{ secrets.DAGSHUB_TOKEN != '' }}"
+          echo "DOCKER_USERNAME is set: ${{ vars.DOCKER_USERNAME != '' }}"
  
       # Install mlflow
       - name: Install dependencies
@@ -37,19 +43,32 @@ jobs:
           pip install pandas numpy matplotlib seaborn scikit-learn 
           pip install mlflow dagshub joblib
 
-      - name: Export MLflow Environment Variables
-        run: |
-          echo "MLFLOW_TRACKING_URI=${{ vars.MLFLOW_TRACKING_URI }}" >> $GITHUB_ENV
-          echo "MLFLOW_TRACKING_USERNAME=${{ secrets.DAGSHUB_USERNAME }}" >> $GITHUB_ENV
-          echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.DAGSHUB_TOKEN }}" >> $GITHUB_ENV
-        
-      - name: Run mlflow project & Find Latest MLflow Run ID
+      - name: Run mlflow project
         run: |
           cd MLproject
-          mlflow run . -P data_path=MLproject/clothes_price_prediction_preprocessing.csv --env-manager=local | tee output.log
-          RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
+          mlflow run . -P data_path=clothes_price_prediction_preprocessing.csv --env-manager=local
+
+      - name: Get latest MLflow run_id
+        id: get_run_id
+        run: |
+          RUN_ID=$(ls -td MLproject/mlruns/*/* | head -n 1 | xargs basename)
           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
-          echo "Latest run_id: $RUN_ID"
+          echo "run_id=$RUN_ID" >> $GITHUB_OUTPUT
+
+
+      # - name: Export MLflow Environment Variables
+      #   run: |
+      #     echo "MLFLOW_TRACKING_URI=${{ vars.MLFLOW_TRACKING_URI }}" >> $GITHUB_ENV
+      #     echo "MLFLOW_TRACKING_USERNAME=${{ secrets.DAGSHUB_USERNAME }}" >> $GITHUB_ENV
+      #     echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.DAGSHUB_TOKEN }}" >> $GITHUB_ENV
+        
+      # - name: Run mlflow project & Find Latest MLflow Run ID
+      #   run: |
+      #     cd MLproject
+      #     mlflow run . -P data_path=MLproject/clothes_price_prediction_preprocessing.csv --env-manager=local | tee output.log
+      #     RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
+      #     echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
+      #     echo "Latest run_id: $RUN_ID"
           
           # MLFLOW_OUTPUT=$(mlflow run . -P data_path=clothes_price_prediction_preprocessing.csv --env-manager=local)
           # echo "$MLFLOW_OUTPUT"

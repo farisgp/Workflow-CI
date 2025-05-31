@@ -11,7 +11,7 @@ import dagshub
 import argparse
 
 REPO_OWNER = "farisgp"  
-REPO_NAME = "Workflow-CI"  
+REPO_NAME = "Eksperimen_SML_FarisGhina"  
 
 # Set the tracking URI to your DagsHub repository
 mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")

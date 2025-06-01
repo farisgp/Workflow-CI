@@ -67,5 +67,5 @@ with mlflow.start_run() as run:
     run_id = run.info.run_id
     print(f"MLFLOW_RUN_ID={run_id}")
 
-    joblib.dump(model, "model.pkl")
+    joblib.dump(model, os.path.join(MLproject, 'model.pkl'))
     print(f"Model saved as 'model.pkl'")

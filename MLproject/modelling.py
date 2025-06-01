@@ -55,14 +55,12 @@ with mlflow.start_run() as run:
     # Train model
     model = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth)
     model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
-    
     mlflow.sklearn.log_model(
         sk_model=model,
         artifact_path="model",
         input_example=input_example
     )    # Log metrics
-    accuracy = model.score(y_test, y_pred)
+    accuracy = model.score(X_test, y_test)
     mlflow.log_metric("accuracy", accuracy)
 
     # Cetak run_id agar bisa digunakan di GitHub Actions

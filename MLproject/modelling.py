@@ -67,7 +67,7 @@ with mlflow.start_run() as run:
     run_id = run.info.run_id
     print(f"MLFLOW_RUN_ID={run_id}")
 
-    output_path = "./models/model.pkl"
+    output_path = "../models/model.pkl"
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     joblib.dump(model, output_path)
     print(f"Model saved to: {output_path}")

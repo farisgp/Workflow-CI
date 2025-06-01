@@ -3,7 +3,6 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, classification_report
 import random
 import numpy as np
 import os
@@ -63,15 +62,12 @@ with mlflow.start_run() as run:
         artifact_path="model",
         input_example=input_example
     )    # Log metrics
-    accuracy = accuracy_score(y_test, y_pred)
-    report = classification_report(y_test, y_pred)
-
+    accuracy = model.score(y_test, y_pred)
     mlflow.log_metric("accuracy", accuracy)
-    mlflow.log_metric("clasification report:\n", report)
 
     # Cetak run_id agar bisa digunakan di GitHub Actions
     run_id = run.info.run_id
     print(f"MLFLOW_RUN_ID={run_id}")
 
-    joblib.dump(model, os.makedirs(os.path.dirname("./models/model.pkl"), exist_ok=True))
-    print(f"Model saved to: ./models/model.pkl")
+    joblib.dump(model, "model.pkl")
+    print(f"Model saved as 'model.pkl'")

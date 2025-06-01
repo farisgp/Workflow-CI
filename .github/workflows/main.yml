@@ -47,12 +47,15 @@ jobs:
           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
           echo "Latest run_id: $RUN_ID"
 
-      - name: Commit and push processed files
+      - name: Commit and push processed files ("model.pkl")
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         run: |
           git config --global user.name ${{ secrets.username }}
           git config --global user.email ${{ secrets.email }}
+          git lfs install
+          git lfs track "MLproject/model.pkl"
+          git add .gitattributes
           git add MLproject/model.pkl
           git commit -m "Add model"
           git push origin main

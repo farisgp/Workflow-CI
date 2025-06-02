@@ -83,7 +83,7 @@ jobs:
       - name: Build Docker Model
         run: |          
           echo "Using RUN_ID = $RUN_ID"
-          mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "cc"
+          mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "clothes_price"
           
       - name: Log in to Docker Hub
         uses: docker/login-action@v2

@@ -9,6 +9,10 @@ on:
       - main
   workflow_dispatch:
  
+env:
+  CSV_URL: "MLproject/clothes_price_prediction_preprocessing.csv"
+  TARGET_VAR: "clothes_price"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,6 +29,11 @@ jobs:
           environment-file: MLproject/conda.yaml
           auto-activate-base: false
 
+      # Check Env Variables
+      - name: Check Env
+        run: |
+          echo $CSV_URL
+
        # Install mlflow
       - name: Install dependencies
         run: |
@@ -38,10 +47,9 @@ jobs:
           echo "MLFLOW_TRACKING_USERNAME=${{ secrets.DAGSHUB_USERNAME }}" >> $GITHUB_ENV
           echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.DAGSHUB_TOKEN }}" >> $GITHUB_ENV
 
-      - name: Run mlflow project
+      - name: Run mlflow project and Get latest MLflow run_id
         run: |
-          cd MLproject
-          mlflow run . -P data_path=clothes_price_prediction_preprocessing.csv --env-manager=local | tee output.log
+          mlflow run MLproject --env-manager=local | tee output.log
 
           RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV

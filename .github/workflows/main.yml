@@ -76,7 +76,7 @@ jobs:
           path: mlruns/
 
       - name: Get latest MLflow run_id
-        id: get_run_id
+        # id: get_run_id
         run: |
           # RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
           RUN_ID=$(ls -td mlruns/0/* | head -1 | xargs basename)

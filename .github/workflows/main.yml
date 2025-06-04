@@ -41,11 +41,11 @@ jobs:
       - name: Run mlflow project and Get latest MLflow run_id
         id: get_run_id
         run: |
-          mlflow run MLproject --env-manager=local 
+          mlflow run . --env-manager=local 
           
-          # echo "Searching run_id from output.log"
-          # RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2 )
-          RUN_ID=$(cat run_id.txt)
+          echo "Searching run_id from output.log"
+          RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2 )
+          # RUN_ID=$(cat run_id.txt)
           
           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
           echo "Latest run_id: $RUN_ID"

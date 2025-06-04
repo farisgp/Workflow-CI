@@ -62,7 +62,7 @@ with mlflow.start_run() as run:
 
     # Cetak run_id agar bisa digunakan di GitHub Actions
     run_id = run.info.run_id
-    print(f"MLFLOW_RUN_ID={run_id}")
+    print(f"MLFLOW_RUN_ID={run_id}", flush=True)
 
     joblib.dump(model, "model.pkl")
     print(f"Model saved as 'model.pkl'")

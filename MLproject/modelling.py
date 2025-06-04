@@ -71,5 +71,5 @@ with mlflow.start_run() as run:
         f.write(run_id)
 
     # joblib.dump(model, "model.pkl")
-    joblib.dump(model, os.path.join(os.path.dirname(__file__), "model.pkl"))
+    joblib.dump(model, "model.pkl")
     print(f"Model saved as 'model.pkl'")

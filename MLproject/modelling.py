@@ -13,17 +13,17 @@ import argparse
 REPO_OWNER = "farisgp"  
 REPO_NAME = "Eksperimen_SML_FarisGhina"  
 
+dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME)
+
 # Set the tracking URI to your DagsHub repository
 mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
-
-# dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME)
 
 print("Tracking URI:", mlflow.get_tracking_uri())
 # print("DAGSHUB_TOKEN set:", 'DAGSHUB_TOKEN' in os.environ)  # For debugging, can be commented out
 # print("Token Value:", os.environ.get("DAGSHUB_TOKEN")[:5], "...(disembunyikan)")  # For debugging, can be commented out
 
 # Create a new MLflow Experiment
-# mlflow.set_experiment("Clothes Price - CI")
+mlflow.set_experiment("Clothes Price - CI")
 
 # Argument parser
 parser = argparse.ArgumentParser()

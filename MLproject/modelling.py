@@ -35,10 +35,10 @@ n_estimators = args.n_estimators
 max_depth = args.max_depth
 
 # --- Load Preprocessed Data
-X_train = pd.read_csv("MLproject/X_train.csv")
-X_test = pd.read_csv("MLproject/X_test.csv")
-y_train = pd.read_csv("MLproject/y_train.csv").values.ravel()  # pastikan jadi 1D
-y_test = pd.read_csv("MLproject/y_test.csv").values.ravel()  # pastikan jadi 1D
+X_train = pd.read_csv("X_train.csv")
+X_test = pd.read_csv("X_test.csv")
+y_train = pd.read_csv("y_train.csv").values.ravel()  # pastikan jadi 1D
+y_test = pd.read_csv("y_test.csv").values.ravel()  # pastikan jadi 1D
 
 with mlflow.start_run() as run:
     model = RandomForestRegressor(
@@ -64,7 +64,7 @@ with mlflow.start_run() as run:
 
     # Cetak run_id agar bisa digunakan di GitHub Actions
     run_id = run.info.run_id
-    print(f"MLFLOW_RUN_ID={run_id}", flush=True)
+    print(f"MLFLOW_RUN_ID={run_id}")
 
     # joblib.dump(model, "model.pkl")
     joblib.dump(model, os.path.join(os.path.dirname(__file__), "model.pkl"))

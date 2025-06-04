@@ -41,6 +41,7 @@ y_train = pd.read_csv("y_train.csv").values.ravel()  # pastikan jadi 1D
 y_test = pd.read_csv("y_test.csv").values.ravel()  # pastikan jadi 1D
 
 with mlflow.start_run() as run:
+    mlflow.autolog()
     model = RandomForestRegressor(
         n_estimators=args.n_estimators,
         max_depth=args.max_depth,

@@ -41,7 +41,8 @@ jobs:
       - name: Run mlflow project and Get latest MLflow run_id
         id: get_run_id
         run: |
-          mlflow run . --env-manager=local 
+          cd MLproject
+          mlflow run . --env-manager=local | tee output.log
           
           echo "Searching run_id from output.log"
           RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2 )

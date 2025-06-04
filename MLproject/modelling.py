@@ -23,7 +23,7 @@ print("Tracking URI:", mlflow.get_tracking_uri())
 # print("Token Value:", os.environ.get("DAGSHUB_TOKEN")[:5], "...(disembunyikan)")  # For debugging, can be commented out
 
 # Create a new MLflow Experiment
-mlflow.set_experiment("CI Clothes Price")
+mlflow.set_experiment("Clothes Price - CI")
 
 # Argument parser
 parser = argparse.ArgumentParser()

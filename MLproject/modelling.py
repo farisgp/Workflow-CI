@@ -66,5 +66,6 @@ with mlflow.start_run() as run:
     # Log model
     mlflow.sklearn.log_model(model, artifact_path="model", input_example=X_train.head())
 
-    joblib.dump(model, "model.pkl")
+    # joblib.dump(model, "model.pkl")
+    joblib.dump(model, os.path.join(os.path.dirname(__file__), "model.pkl"))
     print(f"Model saved as 'model.pkl'")

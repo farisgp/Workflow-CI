@@ -41,6 +41,10 @@ y_train = pd.read_csv("y_train.csv").values.ravel()  # pastikan jadi 1D
 y_test = pd.read_csv("y_test.csv").values.ravel()  # pastikan jadi 1D
 
 with mlflow.start_run() as run:
+    # Cetak run_id agar bisa digunakan di GitHub Actions
+    run_id = run.info.run_id
+    print(f"MLFLOW_RUN_ID={run_id}", flush=True)
+    
     model = RandomForestRegressor(
         n_estimators=args.n_estimators,
         max_depth=args.max_depth,
@@ -61,10 +65,6 @@ with mlflow.start_run() as run:
 
     # Log model
     mlflow.sklearn.log_model(model, artifact_path="model", input_example=X_train.head())
-
-    # Cetak run_id agar bisa digunakan di GitHub Actions
-    run_id = run.info.run_id
-    print(f"MLFLOW_RUN_ID={run_id}", flush=True)
 
     joblib.dump(model, "model.pkl")
     print(f"Model saved as 'model.pkl'")

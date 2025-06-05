@@ -27,53 +27,61 @@ mlflow.set_experiment("Clothes Price - CI")
 
 # Argument parser
 parser = argparse.ArgumentParser()
-parser.add_argument("--n_estimators", type=int, default=100)
-parser.add_argument("--max_depth", type=int, default=10)
-args = parser.parse_args()
+# parser.add_argument("--n_estimators", type=int, default=100)
+# parser.add_argument("--max_depth", type=int, default=10)
+# args = parser.parse_args()
 
-n_estimators = args.n_estimators
-max_depth = args.max_depth
+# n_estimators = args.n_estimators
+# max_depth = args.max_depth
 
+def main(data_dir):
 # --- Load Preprocessed Data
-X_train = pd.read_csv("X_train.csv")
-X_test = pd.read_csv("X_test.csv")
-y_train = pd.read_csv("y_train.csv").values.ravel()  # pastikan jadi 1D
-y_test = pd.read_csv("y_test.csv").values.ravel()  # pastikan jadi 1D
+    X_train = pd.read_csv(os.path.join(data_dir,"X_train.csv"))
+    X_test = pd.read_csv(os.path.join(data_dir,"X_test.csv"))
+    y_train = pd.read_csv(os.path.join(data_dir,"y_train.csv")).values.ravel()  # pastikan jadi 1D
+    y_test = pd.read_csv(os.path.join(data_dir,"y_test.csv")).values.ravel()  # pastikan jadi 1D
 
-with mlflow.start_run() as run:
-    mlflow.autolog()
-    model = RandomForestRegressor(
-        n_estimators=args.n_estimators,
-        max_depth=args.max_depth,
-        random_state=42
-    )
-    model.fit(X_train, y_train.values.ravel())
+    with mlflow.start_run() as run:
+        mlflow.autolog()
+        model = RandomForestRegressor(
+            n_estimators=100,
+            max_depth=10,
+            random_state=42
+        )
+        model.fit(X_train, y_train.values.ravel())
 
-    y_pred = model.predict(X_test)
+        y_pred = model.predict(X_test)
 
-    mse = mean_squared_error(y_test, y_pred)
-    r2 = r2_score(y_test, y_pred)
+        mse = mean_squared_error(y_test, y_pred)
+        r2 = r2_score(y_test, y_pred)
 
-    # Logging parameter dan metrik secara manual
-    mlflow.log_param("n_estimators", args.n_estimators)
-    mlflow.log_param("max_depth", args.max_depth)
-    mlflow.log_metric("MSE", mse)
-    mlflow.log_metric("R2", r2)
+        # Logging parameter dan metrik secara manual
+        mlflow.log_param("n_estimators", args.n_estimators)
+        mlflow.log_param("max_depth", args.max_depth)
+        mlflow.log_metric("MSE", mse)
+        mlflow.log_metric("R2", r2)
 
-    # Log model
-    mlflow.sklearn.log_model(model, artifact_path="model", input_example=X_train.head())
+        # Log model
+        mlflow.sklearn.log_model(model, artifact_path="model", input_example=X_train.head())
 
-    # Cetak run_id agar bisa digunakan di GitHub Actions
-    run_id = run.info.run_id
-    print(f"MLFLOW_RUN_ID={run_id}")
+        # Cetak run_id agar bisa digunakan di GitHub Actions
+        run_id = run.info.run_id
+        print(f"MLFLOW_RUN_ID={run_id}")
 
-    # Simpan run_id ke file agar bisa diambil GitHub Actions
-    with open("run_id.txt", "w") as f:
-        f.write(run_id)
+        # Simpan run_id ke file agar bisa diambil GitHub Actions
+        with open("run_id.txt", "w") as f:
+            f.write(run_id)
 
-    # joblib.dump(model, "model.pkl")
-    joblib.dump(model, "model.pkl")
-    print(f"Model saved as 'model.pkl'")
+        # joblib.dump(model, "model.pkl")
+        joblib.dump(model, "model.pkl")
+        print(f"Model saved as 'model.pkl'")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data_dir", type=str, default="data_preprocessing", help="Path ke folder data")
+    args = parser.parse_args()
+
+    main(args.data_dir)
 
 # Ambil run yang sedang aktif dari MLflow (karena mlflow run sudah memulai run)
 # run = mlflow.active_run()

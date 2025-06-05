@@ -7,5 +7,5 @@ entry_points:
     parameters:
       data_path: {type: str, default: "clothes_preprocessing.csv"}
     command: >
-      python modeling.py --data_path {data_path}
+      python modelling.py --data_path {data_path}
     

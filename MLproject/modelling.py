@@ -78,7 +78,7 @@ def main(data_dir):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data_dir", type=str, default="data_preprocessing", help="Path ke folder data")
+    parser.add_argument("--data_dir", type=str, help="Path ke folder data")
     args = parser.parse_args()
 
     main(args.data_dir)

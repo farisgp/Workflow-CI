@@ -45,7 +45,6 @@ y = df["Price"]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 with mlflow.start_run() as run:
-    mlflow.autolog()
     model = RandomForestRegressor(
         n_estimators=100,
         max_depth=10,
@@ -71,9 +70,6 @@ with mlflow.start_run() as run:
     run_id = run.info.run_id
     print(f"MLFLOW_RUN_ID={run_id}")
 
-    # Simpan run_id ke file agar bisa diambil GitHub Actions
-    with open("run_id.txt", "w") as f:
-        f.write(run_id)
 
     # joblib.dump(model, "model.pkl")
     joblib.dump(model, "model.pkl")

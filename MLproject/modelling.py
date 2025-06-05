@@ -28,7 +28,7 @@ mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
 print("Tracking URI:", mlflow.get_tracking_uri())
 # print("DAGSHUB_TOKEN set:", 'DAGSHUB_TOKEN' in os.environ)  # For debugging, can be commented out
 # print("Token Value:", os.environ.get("DAGSHUB_TOKEN")[:5], "...(disembunyikan)")  # For debugging, can be commented out
-os.environ["MLFLOW_TRACKING_URI"] = "https://dagshub.com/Sidqiamn/Eksperimen_SML_Sidqi.mlflow"
+os.environ["MLFLOW_TRACKING_URI"] = "https://dagshub.com/farisgp/Eksperimen_SML_FarisGhina.mlflow"
 os.environ["MLFLOW_TRACKING_USERNAME"] = "farisgp"
 os.environ["MLFLOW_TRACKING_PASSWORD"] = os.getenv("MLFLOW_TRACKING_PASSWORD", "your-secret-access-key")
 os.environ["MLFLOW_S3_ENDPOINT_URL"] = "https://dagshub.com/farisgp/Eksperimen_SML_FarisGhina.s3"

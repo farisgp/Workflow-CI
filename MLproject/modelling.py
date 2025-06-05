@@ -14,7 +14,7 @@ import argparse
 REPO_OWNER = "farisgp"  
 REPO_NAME = "Eksperimen_SML_FarisGhina"  
 
-# dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME)
+dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, mlflow=True)
 
 # Set the tracking URI to your DagsHub repository
 mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
@@ -55,8 +55,8 @@ with mlflow.start_run() as run:
     r2 = r2_score(y_test, y_pred)
 
     # Logging parameter dan metrik secara manual
-    mlflow.log_param("n_estimators", args.n_estimators)
-    mlflow.log_param("max_depth", args.max_depth)
+    mlflow.log_param("n_estimators", 100)
+    mlflow.log_param("max_depth", 10)
     mlflow.log_metric("MSE", mse)
     mlflow.log_metric("R2", r2)
 

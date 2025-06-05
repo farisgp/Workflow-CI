@@ -40,76 +40,76 @@ X_test = pd.read_csv("X_test.csv")
 y_train = pd.read_csv("y_train.csv").values.ravel()  # pastikan jadi 1D
 y_test = pd.read_csv("y_test.csv").values.ravel()  # pastikan jadi 1D
 
-# with mlflow.start_run() as run:
-#     mlflow.autolog()
-#     model = RandomForestRegressor(
-#         n_estimators=args.n_estimators,
-#         max_depth=args.max_depth,
-#         random_state=42
-#     )
-#     model.fit(X_train, y_train.values.ravel())
+with mlflow.start_run() as run:
+    mlflow.autolog()
+    model = RandomForestRegressor(
+        n_estimators=args.n_estimators,
+        max_depth=args.max_depth,
+        random_state=42
+    )
+    model.fit(X_train, y_train.values.ravel())
 
-#     y_pred = model.predict(X_test)
+    y_pred = model.predict(X_test)
 
-#     mse = mean_squared_error(y_test, y_pred)
-#     r2 = r2_score(y_test, y_pred)
+    mse = mean_squared_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
 
-#     # Logging parameter dan metrik secara manual
-#     mlflow.log_param("n_estimators", args.n_estimators)
-#     mlflow.log_param("max_depth", args.max_depth)
-#     mlflow.log_metric("MSE", mse)
-#     mlflow.log_metric("R2", r2)
+    # Logging parameter dan metrik secara manual
+    mlflow.log_param("n_estimators", args.n_estimators)
+    mlflow.log_param("max_depth", args.max_depth)
+    mlflow.log_metric("MSE", mse)
+    mlflow.log_metric("R2", r2)
 
-#     # Log model
-#     mlflow.sklearn.log_model(model, artifact_path="model", input_example=X_train.head())
+    # Log model
+    mlflow.sklearn.log_model(model, artifact_path="model", input_example=X_train.head())
 
-#     # Cetak run_id agar bisa digunakan di GitHub Actions
-#     run_id = run.info.run_id
-#     print(f"MLFLOW_RUN_ID={run_id}")
+    # Cetak run_id agar bisa digunakan di GitHub Actions
+    run_id = run.info.run_id
+    print(f"MLFLOW_RUN_ID={run_id}")
 
-#     # Simpan run_id ke file agar bisa diambil GitHub Actions
-#     with open("run_id.txt", "w") as f:
-#         f.write(run_id)
+    # Simpan run_id ke file agar bisa diambil GitHub Actions
+    with open("run_id.txt", "w") as f:
+        f.write(run_id)
 
-#     # joblib.dump(model, "model.pkl")
-#     joblib.dump(model, "model.pkl")
-#     print(f"Model saved as 'model.pkl'")
+    # joblib.dump(model, "model.pkl")
+    joblib.dump(model, "model.pkl")
+    print(f"Model saved as 'model.pkl'")
 
 # Ambil run yang sedang aktif dari MLflow (karena mlflow run sudah memulai run)
-run = mlflow.active_run()
-if run is None:
-    raise RuntimeError("No active MLflow run found. This script must be run using `mlflow run`.")
+# run = mlflow.active_run()
+# if run is None:
+#     raise RuntimeError("No active MLflow run found. This script must be run using `mlflow run`.")
 
-mlflow.autolog()  # Autolog model, params, metrics
+# mlflow.autolog()  # Autolog model, params, metrics
 
-# Training
-model = RandomForestRegressor(
-    n_estimators=args.n_estimators,
-    max_depth=args.max_depth,
-    random_state=42
-)
-model.fit(X_train, y_train)
+# # Training
+# model = RandomForestRegressor(
+#     n_estimators=args.n_estimators,
+#     max_depth=args.max_depth,
+#     random_state=42
+# )
+# model.fit(X_train, y_train)
 
-# Prediksi dan evaluasi
-y_pred = model.predict(X_test)
-mse = mean_squared_error(y_test, y_pred)
-r2 = r2_score(y_test, y_pred)
+# # Prediksi dan evaluasi
+# y_pred = model.predict(X_test)
+# mse = mean_squared_error(y_test, y_pred)
+# r2 = r2_score(y_test, y_pred)
 
-# Logging manual (optional karena autolog juga sudah menangkap)
-mlflow.log_param("n_estimators", args.n_estimators)
-mlflow.log_param("max_depth", args.max_depth)
-mlflow.log_metric("MSE", mse)
-mlflow.log_metric("R2", r2)
+# # Logging manual (optional karena autolog juga sudah menangkap)
+# mlflow.log_param("n_estimators", args.n_estimators)
+# mlflow.log_param("max_depth", args.max_depth)
+# mlflow.log_metric("MSE", mse)
+# mlflow.log_metric("R2", r2)
 
-# Logging model
-mlflow.sklearn.log_model(model, artifact_path="model", input_example=X_train.head())
+# # Logging model
+# mlflow.sklearn.log_model(model, artifact_path="model", input_example=X_train.head())
 
-# Simpan model ke file
-joblib.dump(model, "model.pkl")
-print("Model saved to model.pkl")
+# # Simpan model ke file
+# joblib.dump(model, "model.pkl")
+# print("Model saved to model.pkl")
 
-# Simpan run_id ke file agar bisa dibaca GitHub Actions
-run_id = run.info.run_id
-with open("run_id.txt", "w") as f:
-    f.write(run_id)
-print(f"Run ID saved to run_id.txt: {run_id}")
+# # Simpan run_id ke file agar bisa dibaca GitHub Actions
+# run_id = run.info.run_id
+# with open("run_id.txt", "w") as f:
+#     f.write(run_id)
+# print(f"Run ID saved to run_id.txt: {run_id}")

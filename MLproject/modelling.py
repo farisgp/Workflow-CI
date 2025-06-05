@@ -14,14 +14,31 @@ import argparse
 REPO_OWNER = "farisgp"  
 REPO_NAME = "Eksperimen_SML_FarisGhina"  
 
-dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, mlflow=True)
+try:
+    dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, mlflow=True)
+    print("Dagshub initialization successful.")
+except Exception as e:
+    print(f"Error initializing Dagshub: {e}")
+    raise
+
 
 # Set the tracking URI to your DagsHub repository
 mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
 
 print("Tracking URI:", mlflow.get_tracking_uri())
-print("DAGSHUB_TOKEN set:", 'DAGSHUB_TOKEN' in os.environ)  # For debugging, can be commented out
-print("Token Value:", os.environ.get("DAGSHUB_TOKEN")[:5], "...(disembunyikan)")  # For debugging, can be commented out
+# print("DAGSHUB_TOKEN set:", 'DAGSHUB_TOKEN' in os.environ)  # For debugging, can be commented out
+# print("Token Value:", os.environ.get("DAGSHUB_TOKEN")[:5], "...(disembunyikan)")  # For debugging, can be commented out
+os.environ["MLFLOW_TRACKING_URI"] = "https://dagshub.com/Sidqiamn/Eksperimen_SML_Sidqi.mlflow"
+os.environ["MLFLOW_TRACKING_USERNAME"] = "farisgp"
+os.environ["MLFLOW_TRACKING_PASSWORD"] = os.getenv("MLFLOW_TRACKING_PASSWORD", "your-secret-access-key")
+os.environ["MLFLOW_S3_ENDPOINT_URL"] = "https://dagshub.com/farisgp/Eksperimen_SML_FarisGhina.s3"
+os.environ["AWS_ACCESS_KEY_ID"] = os.getenv("MLFLOW_TRACKING_PUBLIC_KEY", "f70376fde2fce272e0d3a8d1887fae7e09adf41c ")
+os.environ["AWS_SECRET_ACCESS_KEY"] = os.getenv("MLFLOW_TRACKING_PASSWORD", "your-secret-access-key")
+os.environ["AWS_DEFAULT_REGION"] = "us-east-1"
+
+print("MLFLOW_TRACKING_PASSWORD:", os.getenv("MLFLOW_TRACKING_PASSWORD", "Not set"))
+print("AWS_SECRET_ACCESS_KEY:", os.getenv("MLFLOW_TRACKING_PASSWORD", "Not set"))
+
 
 # Create a new MLflow Experiment
 mlflow.set_experiment("Clothes Price - CI")

@@ -26,7 +26,7 @@ print("Tracking URI:", mlflow.get_tracking_uri())
 mlflow.set_experiment("Clothes Price - CI")
 
 # Argument parser
-parser = argparse.ArgumentParser()
+# parser = argparse.ArgumentParser()
 # parser.add_argument("--n_estimators", type=int, default=100)
 # parser.add_argument("--max_depth", type=int, default=10)
 # args = parser.parse_args()

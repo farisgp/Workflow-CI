@@ -28,16 +28,16 @@ mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
 print("Tracking URI:", mlflow.get_tracking_uri())
 # print("DAGSHUB_TOKEN set:", 'DAGSHUB_TOKEN' in os.environ)  # For debugging, can be commented out
 # print("Token Value:", os.environ.get("DAGSHUB_TOKEN")[:5], "...(disembunyikan)")  # For debugging, can be commented out
-os.environ["MLFLOW_TRACKING_URI"] = "https://dagshub.com/farisgp/Eksperimen_SML_FarisGhina.mlflow"
-os.environ["MLFLOW_TRACKING_USERNAME"] = "farisgp"
-os.environ["MLFLOW_TRACKING_PASSWORD"] = os.getenv("MLFLOW_TRACKING_PASSWORD", "f70376fde2fce272e0d3a8d1887fae7e09adf41c")
-os.environ["MLFLOW_S3_ENDPOINT_URL"] = "https://dagshub.com/farisgp/Eksperimen_SML_FarisGhina.s3"
-os.environ["AWS_ACCESS_KEY_ID"] = os.getenv("MLFLOW_TRACKING_PUBLIC_KEY", "f70376fde2fce272e0d3a8d1887fae7e09adf41c ")
-os.environ["AWS_SECRET_ACCESS_KEY"] = os.getenv("MLFLOW_TRACKING_PASSWORD", "f70376fde2fce272e0d3a8d1887fae7e09adf41c")
-os.environ["AWS_DEFAULT_REGION"] = "us-east-1"
+# os.environ["MLFLOW_TRACKING_URI"] = "https://dagshub.com/farisgp/Eksperimen_SML_FarisGhina.mlflow"
+# os.environ["MLFLOW_TRACKING_USERNAME"] = "farisgp"
+# os.environ["MLFLOW_TRACKING_PASSWORD"] = os.getenv("MLFLOW_TRACKING_PASSWORD", "0df17c107d7137b8f9a7fe14bb6c6057d4d68db5")
+# os.environ["MLFLOW_S3_ENDPOINT_URL"] = "https://dagshub.com/farisgp/Eksperimen_SML_FarisGhina.s3"
+# os.environ["AWS_ACCESS_KEY_ID"] = os.getenv("MLFLOW_TRACKING_PUBLIC_KEY", "0df17c107d7137b8f9a7fe14bb6c6057d4d68db5 ")
+# os.environ["AWS_SECRET_ACCESS_KEY"] = os.getenv("MLFLOW_TRACKING_PASSWORD", "0df17c107d7137b8f9a7fe14bb6c6057d4d68db5")
+# os.environ["AWS_DEFAULT_REGION"] = "us-east-1"
 
-print("MLFLOW_TRACKING_PASSWORD:", os.getenv("MLFLOW_TRACKING_PASSWORD", "Not set"))
-print("AWS_SECRET_ACCESS_KEY:", os.getenv("MLFLOW_TRACKING_PASSWORD", "Not set"))
+# print("MLFLOW_TRACKING_PASSWORD:", os.getenv("MLFLOW_TRACKING_PASSWORD", "Not set"))
+# print("AWS_SECRET_ACCESS_KEY:", os.getenv("MLFLOW_TRACKING_PASSWORD", "Not set"))
 
 
 # Create a new MLflow Experiment

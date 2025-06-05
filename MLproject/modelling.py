@@ -30,10 +30,10 @@ print("Tracking URI:", mlflow.get_tracking_uri())
 # print("Token Value:", os.environ.get("DAGSHUB_TOKEN")[:5], "...(disembunyikan)")  # For debugging, can be commented out
 os.environ["MLFLOW_TRACKING_URI"] = "https://dagshub.com/farisgp/Eksperimen_SML_FarisGhina.mlflow"
 os.environ["MLFLOW_TRACKING_USERNAME"] = "farisgp"
-os.environ["MLFLOW_TRACKING_PASSWORD"] = os.getenv("MLFLOW_TRACKING_PASSWORD", "your-secret-access-key")
+os.environ["MLFLOW_TRACKING_PASSWORD"] = os.getenv("MLFLOW_TRACKING_PASSWORD", "f70376fde2fce272e0d3a8d1887fae7e09adf41c")
 os.environ["MLFLOW_S3_ENDPOINT_URL"] = "https://dagshub.com/farisgp/Eksperimen_SML_FarisGhina.s3"
 os.environ["AWS_ACCESS_KEY_ID"] = os.getenv("MLFLOW_TRACKING_PUBLIC_KEY", "f70376fde2fce272e0d3a8d1887fae7e09adf41c ")
-os.environ["AWS_SECRET_ACCESS_KEY"] = os.getenv("MLFLOW_TRACKING_PASSWORD", "your-secret-access-key")
+os.environ["AWS_SECRET_ACCESS_KEY"] = os.getenv("MLFLOW_TRACKING_PASSWORD", "f70376fde2fce272e0d3a8d1887fae7e09adf41c")
 os.environ["AWS_DEFAULT_REGION"] = "us-east-1"
 
 print("MLFLOW_TRACKING_PASSWORD:", os.getenv("MLFLOW_TRACKING_PASSWORD", "Not set"))

@@ -5,7 +5,7 @@ conda_env: conda.yaml
 entry_points:
   main:
     parameters:
-      data_dir: {type: str, default: "data_preprocessing"}
+      data_path: {type: str, default: "clothes_preprocessing.csv"}
     command: >
-      python modelling.py --data_dir {data_dir}
+      python modeling.py --data_path {data_path}
     

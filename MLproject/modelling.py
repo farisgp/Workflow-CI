@@ -31,9 +31,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--data_path", type=str, required=True)
 args = parser.parse_args()
 
-n_estimators = args.n_estimators
-max_depth = args.max_depth
-
 # --- Load Preprocessed Data
 df = pd.read_csv(args.data_path)
 

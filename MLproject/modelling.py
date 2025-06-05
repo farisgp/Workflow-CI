@@ -40,65 +40,21 @@ X_test = pd.read_csv("X_test.csv")
 y_train = pd.read_csv("y_train.csv").values.ravel()  # pastikan jadi 1D
 y_test = pd.read_csv("y_test.csv").values.ravel()  # pastikan jadi 1D
 
-with mlflow.start_run() as run:
-    mlflow.autolog()
-    model = RandomForestRegressor(
-        n_estimators=args.n_estimators,
-        max_depth=args.max_depth,
-        random_state=42
-    )
-    model.fit(X_train, y_train.values.ravel())
-
-    y_pred = model.predict(X_test)
-
-    mse = mean_squared_error(y_test, y_pred)
-    r2 = r2_score(y_test, y_pred)
-
-    # Logging parameter dan metrik secara manual
-    mlflow.log_param("n_estimators", args.n_estimators)
-    mlflow.log_param("max_depth", args.max_depth)
-    mlflow.log_metric("MSE", mse)
-    mlflow.log_metric("R2", r2)
-
-    # Log model
-    mlflow.sklearn.log_model(model, artifact_path="model", input_example=X_train.head())
-
-    # Cetak run_id agar bisa digunakan di GitHub Actions
-    run_id = run.info.run_id
-    print(f"MLFLOW_RUN_ID={run_id}")
-
-    # Simpan run_id ke file agar bisa diambil GitHub Actions
-    with open("run_id.txt", "w") as f:
-        f.write(run_id)
-
-    # joblib.dump(model, "model.pkl")
-    joblib.dump(model, "model.pkl")
-    print(f"Model saved as 'model.pkl'")
-
-# Dapatkan run MLflow yang sudah aktif
-# active_run = mlflow.active_run()
-
-# if active_run is None:
-#     print("WARNING: No active MLflow run found. This script should be run via 'mlflow run MLproject'.")
-#     run_id = "NO_ACTIVE_RUN_ID"
-# else:
-#     # Semua operasi logging (log_param, log_metric, log_model)
-#     # akan otomatis terkait dengan active_run ini.
-
+# with mlflow.start_run() as run:
+#     mlflow.autolog()
 #     model = RandomForestRegressor(
 #         n_estimators=args.n_estimators,
 #         max_depth=args.max_depth,
 #         random_state=42
 #     )
-#     # y_train sudah di-ravel() di atas, jadi tidak perlu .values.ravel() lagi di sini
-#     model.fit(X_train, y_train)
+#     model.fit(X_train, y_train.values.ravel())
 
 #     y_pred = model.predict(X_test)
 
 #     mse = mean_squared_error(y_test, y_pred)
 #     r2 = r2_score(y_test, y_pred)
 
-#     # Logging parameter dan metrik secara otomatis terhubung ke active_run
+#     # Logging parameter dan metrik secara manual
 #     mlflow.log_param("n_estimators", args.n_estimators)
 #     mlflow.log_param("max_depth", args.max_depth)
 #     mlflow.log_metric("MSE", mse)
@@ -107,14 +63,53 @@ with mlflow.start_run() as run:
 #     # Log model
 #     mlflow.sklearn.log_model(model, artifact_path="model", input_example=X_train.head())
 
-#     # Dapatkan run_id dari active_run
-#     run_id = active_run.info.run_id
+#     # Cetak run_id agar bisa digunakan di GitHub Actions
+#     run_id = run.info.run_id
+#     print(f"MLFLOW_RUN_ID={run_id}")
 
-#     # Simpan model ke file PKL di direktori yang sama dengan script modelling.py
-#     joblib.dump(model, os.path.join(os.path.dirname(__file__), "model.pkl"))
-#     print(f"Model saved as '{os.path.join(os.path.dirname(__file__), 'model.pkl')}'")
+#     # Simpan run_id ke file agar bisa diambil GitHub Actions
+#     with open("run_id.txt", "w") as f:
+#         f.write(run_id)
 
-# # Cetak run_id agar bisa diambil oleh GitHub Actions
-# # Baris ini harus selalu dieksekusi setelah logika modelling,
-# # terlepas dari apakah active_run ditemukan atau tidak (untuk debugging)
-# print(f"MLFLOW_RUN_ID={run_id}", flush=True)
+#     # joblib.dump(model, "model.pkl")
+#     joblib.dump(model, "model.pkl")
+#     print(f"Model saved as 'model.pkl'")
+
+# Ambil run yang sedang aktif dari MLflow (karena mlflow run sudah memulai run)
+run = mlflow.active_run()
+if run is None:
+    raise RuntimeError("No active MLflow run found. This script must be run using `mlflow run`.")
+
+mlflow.autolog()  # Autolog model, params, metrics
+
+# Training
+model = RandomForestRegressor(
+    n_estimators=args.n_estimators,
+    max_depth=args.max_depth,
+    random_state=42
+)
+model.fit(X_train, y_train)
+
+# Prediksi dan evaluasi
+y_pred = model.predict(X_test)
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+# Logging manual (optional karena autolog juga sudah menangkap)
+mlflow.log_param("n_estimators", args.n_estimators)
+mlflow.log_param("max_depth", args.max_depth)
+mlflow.log_metric("MSE", mse)
+mlflow.log_metric("R2", r2)
+
+# Logging model
+mlflow.sklearn.log_model(model, artifact_path="model", input_example=X_train.head())
+
+# Simpan model ke file
+joblib.dump(model, "model.pkl")
+print("Model saved to model.pkl")
+
+# Simpan run_id ke file agar bisa dibaca GitHub Actions
+run_id = run.info.run_id
+with open("run_id.txt", "w") as f:
+    f.write(run_id)
+print(f"Run ID saved to run_id.txt: {run_id}")

@@ -11,20 +11,18 @@ import joblib
 import dagshub
 import argparse
 
-# REPO_OWNER = "farisgp"  
-# REPO_NAME = "Eksperimen_SML_FarisGhina"  
+REPO_OWNER = "farisgp"  
+REPO_NAME = "Eksperimen_SML_FarisGhina"  
 
-# try:
-#     dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, mlflow=True)
-#     print("Dagshub initialization successful.")
-# except Exception as e:
-#     print(f"Error initializing Dagshub: {e}")
-#     raise
+try:
+    dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, mlflow=True)
+    print("Dagshub initialization successful.")
+except Exception as e:
+    print(f"Error initializing Dagshub: {e}")
+    raise
 
-# dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME)
-
-# # Set the tracking URI to your DagsHub repository
-# mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
+# Set the tracking URI to your DagsHub repository
+mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
 
 # print("Tracking URI:", mlflow.get_tracking_uri())
 # print("DAGSHUB_TOKEN set:", 'DAGSHUB_TOKEN' in os.environ)  # For debugging, can be commented out

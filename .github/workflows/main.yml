@@ -42,7 +42,7 @@ jobs:
         id: get_run_id
         run: |
           cd MLproject
-          mlflow run . --env-manager=local | tee output.log
+          mlflow run . -P data_path=clothes_preprocessing.csv --env-manager=local | tee output.log
           
           echo "Searching run_id from output.log"
           RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2 )

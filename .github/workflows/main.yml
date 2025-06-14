@@ -38,6 +38,11 @@ jobs:
           echo "MLFLOW_TRACKING_TOKEN=${{ secrets.MLFLOW_TRACKING_TOKEN }}" >> $GITHUB_ENV
           # echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.MLFLOW_TRACKING_PASSWORD }}" >> $GITHUB_ENV
 
+      - name: Debug MLflow Environment Variables
+        run: |
+          echo "MLFLOW_TRACKING_URI set to: $MLFLOW_TRACKING_URI"
+          if [ -z "$MLFLOW_TRACKING_TOKEN" ]; then echo "MLFLOW_TRACKING_TOKEN is NOT set!"; else echo "MLFLOW_TRACKING_TOKEN IS set (value hidden for security)."; fi
+
       - name: Run mlflow project and Get latest MLflow run_id
         id: get_run_id
         run: |

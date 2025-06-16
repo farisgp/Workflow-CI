@@ -14,11 +14,6 @@ import argparse
 REPO_OWNER = "farisgp"  
 REPO_NAME = "Workflow-CI"  
 
-dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME)
-
-# Create a new MLflow Experiment
-mlflow.set_experiment("Clothes Price CI")
-
 # Argument parser
 parser = argparse.ArgumentParser()
 parser.add_argument("--data_path", type=str, required=True)

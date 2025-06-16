@@ -37,6 +37,9 @@ jobs:
           pip install pandas numpy matplotlib seaborn scikit-learn 
           pip install mlflow dagshub joblib
 
+      - name: Clear local MLflow cache (if any)
+        run: rm -rf ~/.mlflow
+
       - name: Export MLflow Environment Variables
         run: |
           echo "MLFLOW_TRACKING_URI=https://dagshub.com/farisgp/Eksperimen_SML_FarisGhina.mlflow" >> $GITHUB_ENV

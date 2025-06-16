@@ -16,6 +16,8 @@ REPO_NAME = "Workflow-CI"
 
 dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, mlflow=True)
 
+mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
+
 # Create a new MLflow Experiment
 mlflow.set_experiment("Clothes Price CI")
 

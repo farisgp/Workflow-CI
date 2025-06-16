@@ -22,9 +22,9 @@ except Exception as e:
     raise
 
 # Set the tracking URI to your DagsHub repository
-mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
+# mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
 
-print("Tracking URI:", mlflow.get_tracking_uri())
+# print("Tracking URI:", mlflow.get_tracking_uri())
 
 if mlflow.active_run():
     mlflow.end_run()

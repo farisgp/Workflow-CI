@@ -26,6 +26,9 @@ mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
 
 print("Tracking URI:", mlflow.get_tracking_uri())
 
+if mlflow.active_run():
+    mlflow.end_run()
+
 # Create a new MLflow Experiment
 mlflow.set_experiment("Clothes Price CI")
 

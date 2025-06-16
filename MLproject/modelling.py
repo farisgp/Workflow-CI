@@ -14,6 +14,8 @@ import argparse
 REPO_OWNER = "farisgp"  
 REPO_NAME = "Workflow-CI"  
 
+dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME)
+
 mlflow.set_tracking_uri("https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
 
 # Create a new MLflow Experiment

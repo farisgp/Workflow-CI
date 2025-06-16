@@ -14,20 +14,7 @@ import argparse
 REPO_OWNER = "farisgp"  
 REPO_NAME = "Workflow-CI"  
 
-try:
-    dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, mlflow=True)
-    print("Dagshub initialization successful.")
-except Exception as e:
-    print(f"Error initializing Dagshub: {e}")
-    raise
-
-# Set the tracking URI to your DagsHub repository
-# mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
-
-# print("Tracking URI:", mlflow.get_tracking_uri())
-
-if mlflow.active_run():
-    mlflow.end_run()
+dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, mlflow=True)
 
 # Create a new MLflow Experiment
 mlflow.set_experiment("Clothes Price CI")

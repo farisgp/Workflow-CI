@@ -16,8 +16,6 @@ REPO_NAME = "Workflow-CI"
 
 dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME)
 
-mlflow.set_tracking_uri("https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
-
 # Create a new MLflow Experiment
 mlflow.set_experiment("Clothes Price CI")
 
@@ -25,6 +23,8 @@ mlflow.set_experiment("Clothes Price CI")
 parser = argparse.ArgumentParser()
 parser.add_argument("--data_path", type=str, required=True)
 args = parser.parse_args()
+
+mlflow.set_tracking_uri("https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
 
 # --- Load Preprocessed Data
 df = pd.read_csv(args.data_path)

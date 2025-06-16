@@ -12,7 +12,7 @@ import dagshub
 import argparse
 
 REPO_OWNER = "farisgp"  
-REPO_NAME = "Eksperimen_SML_FarisGhina"  
+REPO_NAME = "Workflow-CI"  
 
 try:
     dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, mlflow=True)

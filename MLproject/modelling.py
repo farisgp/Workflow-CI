@@ -1,4 +1,14 @@
 import mlflow
+import dagshub
+import argparse
+
+REPO_OWNER = "farisgp"  
+REPO_NAME = "Eksperimen_SML_FarisGhina"  
+dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, mlflow=True)
+
+mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
+mlflow.set_experiment("Clothes Price CI")
+
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.ensemble import RandomForestRegressor
@@ -8,19 +18,11 @@ import random
 import numpy as np
 import os
 import joblib
-import dagshub
-import argparse
-
-# REPO_OWNER = "farisgp"  
-# REPO_NAME = "Workflow-CI"  
 
 # Argument parser
 parser = argparse.ArgumentParser()
 parser.add_argument("--data_path", type=str, required=True)
 args = parser.parse_args()
-
-# mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
-mlflow.set_experiment("Clothes Price CI")
 
 # --- Load Preprocessed Data
 df = pd.read_csv(args.data_path)

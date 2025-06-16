@@ -19,7 +19,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--data_path", type=str, required=True)
 args = parser.parse_args()
 
-mlflow.set_tracking_uri("https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
+mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
+mlflow.set_experiment("Clothes Price CI")
 
 # --- Load Preprocessed Data
 df = pd.read_csv(args.data_path)

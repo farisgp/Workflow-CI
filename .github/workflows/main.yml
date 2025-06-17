@@ -44,13 +44,16 @@ jobs:
           echo "MLFLOW_TRACKING_USERNAME=${{ secrets.MLFLOW_TRACKING_USERNAME }}" >> $GITHUB_ENV
           echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.MLFLOW_TRACKING_PASSWORD }}" >> $GITHUB_ENV
 
-      - name: Run mlflow project and Get latest MLflow run_id
-        id: get_run_id # Mengubah ID agar lebih deskriptif
+      - name: Run mlflow project
         run: |
           cd MLproject
           mlflow run . -P data_path=clothes_preprocessing.csv --env-manager=local | tee output.log
-          RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
+          # RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
 
+      - name: Run mlflow project and Get latest MLflow run_id
+        id: get_run_id # Mengubah ID agar lebih deskriptif
+        run: |
+          RUN_ID=$(ls -td mlruns/0/*/ | head -n 1 | cut -d'/' -f3)
           echo "run_id=$RUN_ID" >> "$GITHUB_ENV"
           echo "Latest MLflow Run ID: $RUN_ID"
 

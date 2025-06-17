@@ -16,6 +16,11 @@ REPO_NAME = "Eksperimen_SML_FarisGhina"
 dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, mlflow=True)
 
 mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
+
+# Set credentials explicitly
+os.environ["MLFLOW_TRACKING_USERNAME"] = os.getenv("MLFLOW_TRACKING_USERNAME")
+os.environ["MLFLOW_TRACKING_PASSWORD"] = os.getenv("MLFLOW_TRACKING_PASSWORD")
+
 mlflow.set_experiment("Clothes Price CI")
 
 # Argument parser

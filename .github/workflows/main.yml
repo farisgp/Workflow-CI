@@ -50,7 +50,7 @@ jobs:
           cd MLproject
           mlflow run . -P data_path=clothes_preprocessing.csv --env-manager=local | tee output.log
           RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
-          echo "run_id=$RUN_ID" >> $GITHUB_ENV
+          echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
           echo "Latest MLflow Run ID: $RUN_ID"
 
       - name: Build Docker Model

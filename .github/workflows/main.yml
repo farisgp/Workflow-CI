@@ -48,14 +48,20 @@ jobs:
         run: |
           cd MLproject
           mlflow run . -P data_path=clothes_preprocessing.csv --env-manager=local | tee output.log
-          # RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
 
-      - name: Run mlflow project and Get latest MLflow run_id
+      - name: Get latest MLflow run_id
         id: get_run_id # Mengubah ID agar lebih deskriptif
         run: |
-          RUN_ID=$(ls -td mlruns/0/*/ | head -n 1 | cut -d'/' -f3)
+          # RUN_ID=$(ls -td mlruns/0/*/ | head -n 1 | cut -d'/' -f3)
+          RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
           echo "run_id=$RUN_ID" >> "$GITHUB_ENV"
           echo "Latest MLflow Run ID: $RUN_ID"
+
+      - name: Build Docker Model
+        run: |          
+          RUN_ID = $RUN_ID
+          echo "Using RUN_ID = $RUN_ID"
+          mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "clothes_price"
 
       - name: Commit and push processed files
         env:
@@ -81,12 +87,6 @@ jobs:
         with:
           name: mlflow-logs
           path: mlruns/
-
-      - name: Build Docker Model
-        run: |          
-          RUN_ID = $RUN_ID
-          echo "Using RUN_ID = $RUN_ID"
-          mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "clothes_price"
           
       - name: Log in to Docker Hub
         uses: docker/login-action@v2

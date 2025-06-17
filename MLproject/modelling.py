@@ -20,7 +20,7 @@ mlflow.set_experiment("Clothes Price CI")
 
 # Argument parser
 parser = argparse.ArgumentParser()
-parser.add_argument("--data_path", type=str, required=True)
+parser.add_argument("--data_path", type=str, default="clothes_preprocessing.csv")
 args = parser.parse_args()
 
 mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")

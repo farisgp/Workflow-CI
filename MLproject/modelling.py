@@ -13,7 +13,7 @@ import joblib
 
 REPO_OWNER = "farisgp"  
 REPO_NAME = "Eksperimen_SML_FarisGhina"  
-dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, mlflow=True)
+# dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, mlflow=True)
 
 mlflow.set_experiment("Clothes Price CI")
 
@@ -25,8 +25,8 @@ args = parser.parse_args()
 mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
 
 # Set credentials explicitly
-os.environ["MLFLOW_TRACKING_USERNAME"] = "farisgp"
-os.environ["MLFLOW_TRACKING_PASSWORD"] = "947bb932ba82140b787ca3958eefbdfc53a44cbb"
+os.environ["MLFLOW_TRACKING_USERNAME"] = os.getenv("MLFLOW_TRACKING_USERNAME")
+os.environ["MLFLOW_TRACKING_PASSWORD"] = os.getenv("MLFLOW_TRACKING_PASSWORD")
 
 # --- Load Preprocessed Data
 df = pd.read_csv(args.data_path)

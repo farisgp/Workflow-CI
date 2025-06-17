@@ -64,7 +64,12 @@ with mlflow.start_run() as run:
     mlflow.log_metric("R2", r2)
 
     # Log model
-    mlflow.sklearn.log_model(model, artifact_path="model", input_example=X_train.head())
+    # mlflow.sklearn.log_model(model, artifact_path="model", input_example=X_train.head())
+    # Deteksi apakah sedang berjalan di GitHub Actions
+    if os.getenv("GITHUB_ACTIONS") is None:
+        mlflow.sklearn.log_model(model, artifact_path="model", input_example=X_train.head())
+    else:
+        mlflow.sklearn.log_model(model, artifact_path="model")
 
     # Cetak run_id agar bisa digunakan di GitHub Actions
     run_id = run.info.run_id

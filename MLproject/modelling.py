@@ -1,13 +1,24 @@
 import mlflow
-import dagshub
+# import dagshub
 import argparse
+import os
 
-REPO_OWNER = "farisgp"  
-REPO_NAME = "Eksperimen_SML_FarisGhina"  
-dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, mlflow=True)
+# REPO_OWNER = "farisgp"  
+# REPO_NAME = "Eksperimen_SML_FarisGhina"  
+# dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, mlflow=True)
 
-mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
-mlflow.set_experiment("Clothes Price CI")
+# mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
+# mlflow.set_experiment("Clothes Price CI")
+# Gunakan URL Tracking DagsHub dari environment
+
+mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI", "https://dagshub.com/farisgp/Eksperimen_SML_FarisGhina.mlflow/"))
+mlflow.set_experiment(os.getenv("MLFLOW_EXPERIMENT_NAME", "Clothes Price CI"))
+
+# Jangan panggil dagshub.init() saat jalan di CI
+if os.getenv("GITHUB_ACTIONS") is None:
+    # Hanya panggil saat running lokal
+    import dagshub
+    dagshub.init(repo_owner="farisgp", repo_name="Eksperimen_SML_FarisGhina", mlflow=True)
 
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder, StandardScaler
@@ -16,7 +27,6 @@ from sklearn.metrics import  mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 import random
 import numpy as np
-import os
 import joblib
 
 # Argument parser

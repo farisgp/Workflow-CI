@@ -81,6 +81,7 @@ jobs:
 
       - name: Build Docker Model
         run: |          
+          RUN_ID = ${{ steps.get_run_id.outputs.run_id }}
           echo "Using RUN_ID = $RUN_ID"
           mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "clothes_price"
           

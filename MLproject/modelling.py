@@ -39,38 +39,26 @@ y = df["Price"]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 with mlflow.start_run() as run:
-    # model = RandomForestRegressor(
-    #     n_estimators=100,
-    #     max_depth=10,
-    #     random_state=42
-    # )
-    # model.fit(X_train, y_train.values.ravel())
-
-    # y_pred = model.predict(X_test)
-
-    # mse = mean_squared_error(y_test, y_pred)
-    # r2 = r2_score(y_test, y_pred)
-
-    # # Logging parameter dan metrik secara manual
-    # mlflow.log_param("n_estimators", 100)
-    # mlflow.log_param("max_depth", 10)
-    # mlflow.log_metric("MSE", mse)
-    # mlflow.log_metric("R2", r2)
-
-    # # Log model
-    # mlflow.sklearn.log_model(model, artifact_path="model", input_example=X_train.head())
-
-    mlflow.autolog()
-    # Log parameters
-    model = RandomForestRegressor(n_estimators=100, random_state=42)
-    model.fit(X_train, y_train)
+    model = RandomForestRegressor(
+        n_estimators=100,
+        max_depth=10,
+        random_state=42
+    )
+    model.fit(X_train, y_train.values.ravel())
 
     y_pred = model.predict(X_test)
+
     mse = mean_squared_error(y_test, y_pred)
     r2 = r2_score(y_test, y_pred)
 
-    print(f"MSE: {mse:.4f}")
-    print(f"R^2: {r2:.4f}")
+    # Logging parameter dan metrik secara manual
+    mlflow.log_param("n_estimators", 100)
+    mlflow.log_param("max_depth", 10)
+    mlflow.log_metric("MSE", mse)
+    mlflow.log_metric("R2", r2)
+
+    # Log model
+    mlflow.sklearn.log_model(model, artifact_path="model", input_example=X_train.head())
 
     # Cetak run_id agar bisa digunakan di GitHub Actions
     run_id = run.info.run_id

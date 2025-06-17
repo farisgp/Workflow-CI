@@ -79,12 +79,6 @@ jobs:
           name: mlflow-logs
           path: mlruns/
 
-      - name: Get latest MLflow run_id
-        run: |
-          RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
-          echo "RUN_ID = $RUN_ID" >> $GITHUB_ENV
-          echo "run_id = $RUN_ID" >> $GITHUB_OUTPUT
-
       - name: Build Docker Model
         run: |          
           echo "Using RUN_ID = $RUN_ID"

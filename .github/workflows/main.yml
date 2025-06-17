@@ -38,70 +38,93 @@ jobs:
           pip install pandas numpy matplotlib seaborn scikit-learn 
           pip install mlflow dagshub joblib
 
-      - name: Clear local MLflow cache (if any)
-        run: rm -rf ~/.mlflow
-
-      - name: Export MLflow Environment Variables
+      - name: Print Environment for Debugging
         run: |
-          echo "MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }}" >> $GITHUB_ENV
-          echo "MLFLOW_TRACKING_USERNAME=${{ secrets.MLFLOW_TRACKING_USERNAME }}" >> $GITHUB_ENV
-          echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.MLFLOW_TRACKING_PASSWORD }}" >> $GITHUB_ENV
+          echo "MLFLOW_TRACKING_URI: $MLFLOW_TRACKING_URI"
+          echo "MLFLOW_TRACKING_USERNAME: $MLFLOW_TRACKING_USERNAME"
+          echo "MLFLOW_TRACKING_PASSWORD length: ${#MLFLOW_TRACKING_PASSWORD}"
 
-      - name: Run mlflow project and Get latest MLflow run_id
-        id: get_run_id # Mengubah ID agar lebih deskriptif
+      - name: Debug Python MLflow Connection
         run: |
           cd MLproject
-          mlflow run . -P data_path=clothes_preprocessing.csv --env-manager=local | tee output.log
-          RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
-
-          echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
-          echo "Latest MLflow Run ID: $RUN_ID"
-
-      - name: Commit and push processed files
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-        run: |
-          git config --global user.name ${{ secrets.username }}
-          git config --global user.email ${{ secrets.email }}
-          git lfs install
-          git lfs track "*.pkl"
-          git add .gitattributes
-          git add MLproject/model.pkl
-          git commit -m "Add model"
-          git push origin main
+          python - <<EOF
+          import os
+          import mlflow
           
-      - name: Upload trained model
-        uses: actions/upload-artifact@v4
-        with:
-          name: trained-model
-          path: MLproject/model.pkl
-
-      - name: Upload MLflow logs
-        uses: actions/upload-artifact@v4
-        with:
-          name: mlflow-logs
-          path: mlruns/
-
-      - name: Get latest MLflow run_id
-        run: |
-          # RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
-          RUN_ID=$(ls -td mlruns/0/* | head -1 | xargs basename)
-          echo "RUN_ID = $RUN_ID" >> $GITHUB_ENV
-          echo "run_id = $RUN_ID" >> $GITHUB_OUTPUT
-
-      - name: Build Docker Model
-        run: |          
-          echo "Using RUN_ID = $RUN_ID"
-          mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "clothes_price"
+          print("Tracking URI:", os.getenv("MLFLOW_TRACKING_URI"))
+          print("Username:", os.getenv("MLFLOW_TRACKING_USERNAME"))
+          print("Password length:", len(os.getenv("MLFLOW_TRACKING_PASSWORD")))
           
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI"))
+          mlflow.set_experiment(os.getenv("MLFLOW_EXPERIMENT_NAME", "Clothes Price CI"))
           
-      - name: Build Docker image
-        run: docker build -t farisgp/clothes_price:latest MLproject/
+          with mlflow.start_run(run_name="debug_run") as run:
+              print("Run ID:", run.info.run_id)
+              mlflow.log_param("test_param", 123)
+              mlflow.log_metric("test_metric", 0.98)
+          EOF
+
+      # - name: Export MLflow Environment Variables
+      #   run: |
+      #     echo "MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }}" >> $GITHUB_ENV
+      #     echo "MLFLOW_TRACKING_USERNAME=${{ secrets.MLFLOW_TRACKING_USERNAME }}" >> $GITHUB_ENV
+      #     echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.MLFLOW_TRACKING_PASSWORD }}" >> $GITHUB_ENV
+
+      # - name: Run mlflow project and Get latest MLflow run_id
+      #   id: get_run_id # Mengubah ID agar lebih deskriptif
+      #   run: |
+      #     cd MLproject
+      #     mlflow run . -P data_path=clothes_preprocessing.csv --env-manager=local | tee output.log
+      #     RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
+
+      #     echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
+      #     echo "Latest MLflow Run ID: $RUN_ID"
+
+      # - name: Commit and push processed files
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+      #   run: |
+      #     git config --global user.name ${{ secrets.username }}
+      #     git config --global user.email ${{ secrets.email }}
+      #     git lfs install
+      #     git lfs track "*.pkl"
+      #     git add .gitattributes
+      #     git add MLproject/model.pkl
+      #     git commit -m "Add model"
+      #     git push origin main
+          
+      # - name: Upload trained model
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: trained-model
+      #     path: MLproject/model.pkl
+
+      # - name: Upload MLflow logs
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: mlflow-logs
+      #     path: mlruns/
+
+      # - name: Get latest MLflow run_id
+      #   run: |
+      #     # RUN_ID=$(grep 'MLFLOW_RUN_ID=' output.log | cut -d'=' -f2)
+      #     RUN_ID=$(ls -td mlruns/0/* | head -1 | xargs basename)
+      #     echo "RUN_ID = $RUN_ID" >> $GITHUB_ENV
+      #     echo "run_id = $RUN_ID" >> $GITHUB_OUTPUT
+
+      # - name: Build Docker Model
+      #   run: |          
+      #     echo "Using RUN_ID = $RUN_ID"
+      #     mlflow models build-docker --model-uri "runs:/$RUN_ID/model" --name "clothes_price"
+          
+      # - name: Log in to Docker Hub
+      #   uses: docker/login-action@v2
+      #   with:
+      #     username: ${{ secrets.DOCKER_USERNAME }}
+      #     password: ${{ secrets.DOCKER_PASSWORD }}
+          
+      # - name: Build Docker image
+      #   run: docker build -t farisgp/clothes_price:latest MLproject/
   
-      - name: Push Docker image
-        run: docker push farisgp/clothes_price:latest
+      # - name: Push Docker image
+      #   run: docker push farisgp/clothes_price:latest

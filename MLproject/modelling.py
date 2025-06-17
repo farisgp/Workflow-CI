@@ -51,7 +51,12 @@ with mlflow.start_run() as run:
     mlflow.log_metric("R2", r2)
 
     # Log model
-    mlflow.sklearn.log_model(model, artifact_path="model")
+    mlflow.sklearn.log_model(
+        sk_model=model,
+        artifact_path="model",
+        input_example=X_train.head()
+    )
+
 
     # Cetak run_id agar bisa digunakan di GitHub Actions
     run_id = run.info.run_id

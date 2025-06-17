@@ -43,9 +43,9 @@ jobs:
 
       - name: Export MLflow Environment Variables
         run: |
-          echo "MLFLOW_TRACKING_URI=https://dagshub.com/farisgp/Eksperimen_SML_FarisGhina.mlflow" >> $GITHUB_ENV
-          echo "MLFLOW_TRACKING_TOKEN=${{ secrets.MLFLOW_TRACKING_TOKEN }}" >> $GITHUB_ENV
-          # echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.MLFLOW_TRACKING_PASSWORD }}" >> $GITHUB_ENV
+          echo "MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }}" >> $GITHUB_ENV
+          echo "MLFLOW_TRACKING_USERNAME=${{ secrets.MLFLOW_TRACKING_USERNAME }}" >> $GITHUB_ENV
+          echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.MLFLOW_TRACKING_PASSWORD }}" >> $GITHUB_ENV
 
       - name: Run mlflow project and Get latest MLflow run_id
         id: get_run_id # Mengubah ID agar lebih deskriptif

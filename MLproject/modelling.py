@@ -18,8 +18,16 @@ dagshub.init(repo_owner=REPO_OWNER, repo_name=REPO_NAME, mlflow=True)
 mlflow.set_tracking_uri(f"https://dagshub.com/{REPO_OWNER}/{REPO_NAME}.mlflow/")
 
 # Set credentials explicitly
-os.environ["MLFLOW_TRACKING_USERNAME"] = os.getenv("MLFLOW_TRACKING_USERNAME")
-os.environ["MLFLOW_TRACKING_PASSWORD"] = os.getenv("MLFLOW_TRACKING_PASSWORD")
+# os.environ["MLFLOW_TRACKING_USERNAME"] = os.getenv("MLFLOW_TRACKING_USERNAME")
+# os.environ["MLFLOW_TRACKING_PASSWORD"] = os.getenv("MLFLOW_TRACKING_PASSWORD")
+
+print("MLFLOW_TRACKING_URI:", os.getenv("MLFLOW_TRACKING_URI", "Not set"))
+print("MLFLOW_TRACKING_USERNAME:", os.getenv("MLFLOW_TRACKING_USERNAME", "Not set"))
+print("MLFLOW_TRACKING_PASSWORD:", os.getenv("MLFLOW_TRACKING_PASSWORD", "Not set"))
+print("MLFLOW_S3_ENDPOINT_URL:", os.getenv("MLFLOW_S3_ENDPOINT_URL", "Not set"))
+print("AWS_ACCESS_KEY_ID:", os.getenv("AWS_ACCESS_KEY_ID", "Not set"))
+print("AWS_SECRET_ACCESS_KEY:", os.getenv("AWS_SECRET_ACCESS_KEY", "Not set"))
+print("AWS_DEFAULT_REGION:", os.getenv("AWS_DEFAULT_REGION", "Not set"))
 
 mlflow.set_experiment("Clothes Price CI")
 

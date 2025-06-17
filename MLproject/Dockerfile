@@ -22,4 +22,4 @@ RUN conda env create -f conda.yaml
 
 # Aktifkan conda environment & set entrypoint
 SHELL ["conda", "run", "-n", "clothes-env", "/bin/bash", "-c"]
-ENTRYPOINT ["conda", "run", "-n", "clothes-env", "mlflow", "run", ".", "-P", "data_path=clothes_price_prediction_preprocessing.csv"]
+ENTRYPOINT ["conda", "run", "-n", "clothes-env", "mlflow", "run", ".", "-P", "data_path=clothes_preprocessing.csv"]
